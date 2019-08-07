@@ -1,12 +1,14 @@
-package personal.j.twitch_alerter;
+package com.personal.j.twitch_alerter.Notifiiers;
 
+import com.personal.j.twitch_alerter.Observer;
 import org.gnome.gtk.Gtk;
 import org.gnome.notify.Notification;
 import org.gnome.notify.Notify;
 
-public class LinuxAlerter implements Alerter
+public class LinuxNotifier implements Observer
 {
-	static  {
+	static
+	{
 		Gtk.init(new String[0]);
 		Notify.init("TwitchAlerter");
 	}
@@ -16,7 +18,7 @@ public class LinuxAlerter implements Alerter
 		Notification streamAlert = new Notification(
 				streamerName + " is live",
 				"Go to Twitch.tv" + streamerName + " to watch",
-				streamerName);
+				streamerName.toLowerCase());
 
 		streamAlert.show();
 	}
