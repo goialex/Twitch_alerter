@@ -1,6 +1,6 @@
 package com.personal.j.twitch_alerter;
 
-import com.personal.j.twitch_alerter.DataGetter.UserFollowsGetter;
+import com.personal.j.twitch_alerter.DataGetter.TwitchUserFollowsDataGetter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +18,7 @@ import java.util.*;
 public class FollowerUserNamesShould
 {
 	@Mock
-	UserFollowsGetter followsGetter;
+	TwitchUserFollowsDataGetter followsGetter;
 
 	FollowerUserNames followerInformation;
 
@@ -31,16 +31,16 @@ public class FollowerUserNamesShould
 	@Test
 	public void call_followsGetter() throws IOException
 	{
-		followerInformation.getFollowers();
+		followerInformation.getFollowerNames();
 		Mockito.verify(followsGetter).getUserFollowData();
 	}
 
 	@Test(expected = UncheckedIOException.class)
 	public void throw_an_exception_on_server_failure()
 	{
-		Mockito.when(followerInformation.getFollowers()).thenThrow(new IOException());
+		Mockito.when(followerInformation.getFollowerNames()).thenThrow(new IOException());
 
-		followerInformation.getFollowers();
+		followerInformation.getFollowerNames();
 	}
 
 	@Test
@@ -55,7 +55,7 @@ public class FollowerUserNamesShould
 
 		Mockito.when(followsGetter.getUserFollowData()).thenReturn(createFollowNameListMock(name1, name2));
 
-		Assert.assertEquals(expected, followerInformation.getFollowers());
+		Assert.assertEquals(expected, followerInformation.getFollowerNames());
 	}
 
 	private List<Map<String, String>> createFollowNameListMock(String name1, String name2)

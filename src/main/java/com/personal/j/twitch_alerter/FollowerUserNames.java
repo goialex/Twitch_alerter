@@ -1,6 +1,6 @@
 package com.personal.j.twitch_alerter;
 
-import com.personal.j.twitch_alerter.DataGetter.UserFollowsGetter;
+import com.personal.j.twitch_alerter.DataGetter.TwitchUserFollowsDataGetter;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -11,24 +11,24 @@ import java.util.Set;
 
 public class FollowerUserNames
 {
-	private UserFollowsGetter followsGetter;
+	private TwitchUserFollowsDataGetter followsGetter;
 
-	public FollowerUserNames(UserFollowsGetter followsGetter)
+	public FollowerUserNames(TwitchUserFollowsDataGetter followsGetter)
 	{
 		this.followsGetter = followsGetter;
 	}
 
-	public Set<String> getFollowers()
+	public Set<String> getFollowerNames()
 	{
 		Set<String>               followers  = new HashSet<>();
 		List<Map<String, String>> followData = getUserFollowData(followsGetter);
 
-		followData.forEach(stringStringMap -> followers.add(stringStringMap.get("name")));
+		followData.forEach(dataMap -> followers.add(dataMap.get("name")));
 
 		return followers;
 	}
 
-	private List<Map<String, String>> getUserFollowData(UserFollowsGetter getter)
+	private List<Map<String, String>> getUserFollowData(TwitchUserFollowsDataGetter getter)
 	{
 		try
 		{

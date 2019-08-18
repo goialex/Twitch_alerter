@@ -1,20 +1,19 @@
 package com.personal.j.twitch_alerter;
 
-import com.personal.j.twitch_alerter.DataGetter.UserFollowsGetter;
+import com.personal.j.twitch_alerter.DataGetter.TwitchUserFollowsDataGetter;
 
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
 public class FollowerIcons
 {
-	private UserFollowsGetter followsGetter;
+	private TwitchUserFollowsDataGetter followsGetter;
 
-	public FollowerIcons(UserFollowsGetter followsGetter)
+	public FollowerIcons(TwitchUserFollowsDataGetter followsGetter)
 	{
 		this.followsGetter = followsGetter;
 	}
@@ -23,11 +22,13 @@ public class FollowerIcons
 	{
 		Map<String, String> followerInfo = getFollowers();
 
-		followerInfo.forEach((name, url) -> {
+		followerInfo.forEach((name, logoUrl) -> {
 			try
 			{
-				ImageIO.write(ImageIO.read(new URL(url)), "PNG",
-						new File(toPath + "/" + name + ".png"));
+				File file = new File(toPath + "/" + name + ".png");
+				if (!file.exists())
+					ImageIO.write(ImageIO.read(new URL(logoUrl)), "PNG", file);
+
 			} catch (IOException e)
 			{
 				System.out.println("Failed to download image: \n" + e.getMessage());
@@ -37,7 +38,7 @@ public class FollowerIcons
 
 	public Map<String, String> getFollowers()
 	{
-		Map<String, String>       followers  = new HashMap();
+		Map<String, String>       followers  = new HashMap<>();
 		List<Map<String, String>> followData = getUserFollowData(followsGetter);
 
 		followData.forEach(stringMap ->
@@ -46,7 +47,7 @@ public class FollowerIcons
 		return followers;
 	}
 
-	private List<Map<String, String>> getUserFollowData(UserFollowsGetter getter)
+	private List<Map<String, String>> getUserFollowData(TwitchUserFollowsDataGetter getter)
 	{
 		try
 		{
