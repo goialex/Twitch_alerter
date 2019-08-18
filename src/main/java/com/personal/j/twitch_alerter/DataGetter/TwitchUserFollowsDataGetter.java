@@ -8,12 +8,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class UserFollowsGetter
+public class TwitchUserFollowsGetter
 {
 	private TwitchAPI          twitchAPI;
 	private UserFollowsDecoder followsDecoder;
 
-	public UserFollowsGetter(String clientID, String userId)
+	public TwitchUserFollowsGetter(String clientID, String userId)
 	{
 		twitchAPI = new TwitchV5APIUserFollows(clientID, userId);
 		this.followsDecoder = new UserFollowsDecoder();
